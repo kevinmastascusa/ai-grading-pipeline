@@ -1,0 +1,32 @@
+name: ai-grading-pipeline
+channels:
+  - defaults
+  - conda-forge # Good to have for some packages
+dependencies:
+  - python=3.8 # Match the Python version from the original Dockerfile
+  - pip
+  - flask=2.1.1
+  - opencv
+  - pandas
+  - matplotlib
+  - seaborn
+  - numpy
+  - scikit-learn=0.23.2
+  - requests=2.26.0
+  - pyspark=3.1.2
+  - jupyter=1.0.0
+  - tensorflow=2.12.0
+  - tensorflow-hub # For pre-trained models
+  - sqlalchemy # For database interaction
+  - datasets # For Hugging Face datasets
+  # Add openjdk for PySpark if not relying on system-level JDK in Docker
+  - openjdk
+  # Build tools that might be needed by pip packages
+  - gcc_linux-64 # For gcc
+  - gxx_linux-64 # For g++ (build-essential)
+  # Development and CI/CD tools
+  - pytest
+  - flake8
+  - pip:
+    - dvc # Example if you decide to use DVC for data versioning
+    # Add other pip-specific packages here if needed

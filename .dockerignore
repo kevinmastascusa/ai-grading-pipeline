@@ -1,0 +1,63 @@
+\
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+.ipynb_checkpoints
+
+# Conda
+.condarc
+conda-meta/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data - Assuming data is mounted or handled separately in production
+data/raw/
+data/processed/
+# If you have large datasets not managed by DVC or similar, add them here
+
+# Notebooks - Typically not needed in production image
+notebooks/
+
+# Test files (if not needed in production image)
+tests/
+*.test.py
+pytest.ini
+.pytest_cache/
+
+# Logs
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Secrets / Configs (should be managed via environment variables or mounted secrets)
+*.env
+secrets/
+config.ini
+*.pem
+*.key
+
+# Model files (if large and managed by DVC or downloaded at runtime)
+# models/
+# *.pkl
+# *.h5

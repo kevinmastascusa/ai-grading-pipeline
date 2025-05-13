@@ -1,0 +1,36 @@
+name: Python Application CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: ai-grading-pipeline # Name from your environment.yml
+        environment-file: environment.yml
+        python-version: "3.8" # Align with environment.yml
+        auto-activate-base: false
+
+    - name: Install additional dependencies (if any)
+      shell: bash -el {0} # Important for Conda
+      run: |
+        # Example: conda run -n ai-grading-pipeline pip install -r requirements.txt
+        echo "No additional pip requirements in this example"
+
+    - name: Lint with Flake8
+      shell: bash -el {0}
+      run: |
+        # flake8 is now in the conda environment
+        conda run -n ai-grading-pipeline flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Add other linters/formatters like Black if you use them
+
+    - name: Test with pytest
+      shell: bash -el {0}
+      run: |
+        # pytest is now in the conda environment
+        conda run -n ai-grading-pipeline pytest src/ # Assuming tests are in or discoverable from src/

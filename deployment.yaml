@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-grading-deployment
+  labels:
+    app: ai-grading-app
+spec:
+  replicas: 3 # Adjust the number of desired instances
+  selector:
+    matchLabels:
+      app: ai-grading-app
+  template:
+    metadata:
+      labels:
+        app: ai-grading-app
+    spec:
+      containers:
+      - name: ai-grading-container
+        image: kzmastascusa/ai-grading-app:latest # Your Docker Hub image
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_ENV 
+          value: "production" # Example: Set Flask environment to production
+        # - name: MODEL_PATH
+        #   value: "/app/models/your_model.h5" # Example: Path to a model file
+        readinessProbe:
+          httpGet:
+            path: / # Basic check, assumes root path returns 200 OK when ready
+            port: 5000
+          initialDelaySeconds: 10 # How long to wait before the first probe
+          periodSeconds: 15     # How often to perform the probe
+          timeoutSeconds: 5     # When the probe times out
+          failureThreshold: 3   # How many times to try before marking as unready
+          successThreshold: 1   # How many successes to mark as ready
+        livenessProbe:
+          httpGet:
+            path: / # Basic check, assumes root path returns 200 OK if alive
+            port: 5000
+          initialDelaySeconds: 30 # How long to wait before the first probe
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        # If your application needs persistent storage, you would define volumeMounts here
+        # and configure PersistentVolumeClaims.
+        # volumeMounts:
+        # - name: model-storage
+        #   mountPath: /app/models
+      # volumes:
+      # - name: model-storage
+      #   persistentVolumeClaim:
+      #     claimName: ai-model-pvc # You would need to create this PVC
